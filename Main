@@ -1,0 +1,45 @@
+local Player = game.Players.LocalPlayer
+
+local AutoRebirth = false
+
+local Souls = Player.leaderstats.Souls
+local Credits = Player.leaderstats.Credits
+
+local Gui = Instance.new("ScreenGui", Player.PlayerGui)
+local Frame = Instance.new("Frame", Gui)
+local Button = Instance.new("TextButton", Frame)
+Gui.ResetOnSpawn = false
+
+Frame.Size = UDim2.new(0.185, 0,0.119, 0)
+Frame.Position = UDim2.new(0.1, 0,0.179, 0)
+Frame.Interactable = true
+Frame.Draggable = true
+Frame.Active = true
+
+Button.Size = UDim2.new(0.826, 0,0.509, 0)
+Button.Position = UDim2.new(0.087, 0,0.445, 0)
+Button.Text = "AUTO REBIRTH OFF"
+
+Button.Activated:Connect(function()
+	if AutoRebirth == false then
+		Button.Text = "AUTO REBIRTH ON"
+		AutoRebirth = true
+	elseif AutoRebirth == true then
+		Button.Text = "AUTO REBIRTH OFF"
+		AutoRebirth = false
+	end
+end)
+
+while task.wait(0.25) do
+	if AutoRebirth == true then
+		if Souls.Value >= 9999 and Credits.Value >= 300 then
+			game.ReplicatedStorage.RebirthEvent.Yes:FireServer()
+		end
+		if Souls.Value < 10000 then
+			game.ReplicatedStorage.ShopEvents.Souls10000:FireServer()
+		end
+		if Credits.Value < 300 then
+			game.ReplicatedStorage.ShopEvents.Credit100:FireServer()
+		end
+	end
+end
